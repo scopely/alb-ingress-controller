@@ -133,12 +133,12 @@ func ParseAnnotations(annotations map[string]string) (*Annotations, error) {
 		SecurityGroups:  securitygroups,
 		SuccessCodes:    aws.String(annotations[successCodesKey]),
 		Tags:            stringToTags(annotations[tagsKey]),
-		HealthcheckIntervalSeconds: parseInt(annotations[healthcheckIntervalSecondsKey], aws.Int64(15)),
+		HealthcheckIntervalSeconds: parseInt(annotations[healthcheckIntervalSecondsKey], aws.Int64(30)),
 		HealthcheckPath:            parseHealthcheckPath(annotations[healthcheckPathKey]),
 		HealthcheckPort:            parseHealthcheckPort(annotations[healthcheckPortKey]),
 		HealthcheckProtocol:        parseString(annotations[healthcheckProtocolKey]),
 		HealthcheckTimeoutSeconds:  parseInt(annotations[healthcheckTimeoutSecondsKey], aws.Int64(5)),
-		HealthyThresholdCount:      parseInt(annotations[healthyThresholdCountKey], aws.Int64(2)),
+		HealthyThresholdCount:      parseInt(annotations[healthyThresholdCountKey], aws.Int64(5)),
 		UnhealthyThresholdCount:    parseInt(annotations[unhealthyThresholdCountKey], aws.Int64(2)),
 	}
 
