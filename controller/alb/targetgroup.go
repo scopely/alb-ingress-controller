@@ -35,13 +35,6 @@ func NewTargetGroup(annotations *config.Annotations, tags util.Tags, clustername
 
 	id := fmt.Sprintf("%.12s-%.5d-%.5s-%.7s", *clustername, *port, *annotations.BackendProtocol, output)
 
-	// Add the service name tag to the Target group as it's needed when reassembling ingresses after
-	// controller relaunch.
-	tags = append(tags, &elbv2.Tag{
-		Key: aws.String("ServiceName"), Value: aws.String(svcName)})
-
-	// TODO: Quick fix as we can't have the loadbalancer and target groups share pointers to the same
-	// tags. Each modify tags individually and can cause bad side-effects.
 	newTagList := []*elbv2.Tag{}
 	for _, tag := range tags {
 		key := *tag.Key
@@ -51,8 +44,14 @@ func NewTargetGroup(annotations *config.Annotations, tags util.Tags, clustername
 			Key:   &key,
 			Value: &value,
 		}
+
 		newTagList = append(newTagList, newTag)
 	}
+
+	newTagList = append(newTagList, &elbv2.Tag{
+		Key: aws.String("ServiceName"),
+		Value: aws.String(svcName)},
+	)
 
 	targetGroup := &TargetGroup{
 		IngressID:   ingressID,

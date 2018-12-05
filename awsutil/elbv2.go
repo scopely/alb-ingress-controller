@@ -225,8 +225,8 @@ func (e *ELBV2) DescribeLoadBalancers(clusterName *string) ([]*elbv2.LoadBalance
 
 		for _, loadBalancer := range describeLoadBalancersOutput.LoadBalancers {
 			if strings.HasPrefix(*loadBalancer.LoadBalancerName, *clusterName+"-") {
-				if s := strings.Split(*loadBalancer.LoadBalancerName, "-"); len(s) == 2 {
-					if s[0] == *clusterName {
+				if s := strings.Split(*loadBalancer.LoadBalancerName, "-"); len(s) == 3 {
+					if (s[0] + "-" + s[1]) == *clusterName {
 						loadbalancers = append(loadbalancers, loadBalancer)
 					}
 				}
