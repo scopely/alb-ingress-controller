@@ -12,7 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM alpine:3.5
-RUN apk add --no-cache ca-certificates
-COPY server server
+FROM golang:1.11-alpine AS server_builder
+
+RUN apk add bash ca-certificates git gcc g++ libc-dev glide
+
+WORKDIR /go/src/github.com/coreos/alb-ingress-controller
+
+COPY . ./
+
+RUN go version
+
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go install -a .
+
+FROM alpine AS server
+
+RUN apk add ca-certificates
+
+COPY --from=server_builder /go/bin/alb-ingress-controller /server
+
 ENTRYPOINT ["/server"]
