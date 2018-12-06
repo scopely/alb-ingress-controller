@@ -34,7 +34,7 @@ var logLevel = INFO // Default log level
 
 // Debugf will print debug messages if debug logging is enabled
 func Debugf(format, ingressName string, args ...interface{}) {
-	if logLevel < INFO {
+	if logLevel == DEBUG {
 		ingressName = leftBracket + ingressName + rightBracket
 		prefix := fmt.Sprintf("%s %s %s: ", identifier, ingressName, debugLevel)
 		glog.Infof(prefix+format, args...)

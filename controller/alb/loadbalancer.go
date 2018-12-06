@@ -106,7 +106,7 @@ func (lb *LoadBalancer) Reconcile() error {
 	default: // check for diff between lb current and desired, modify if necessary
 		needsModification, _ := lb.needsModification()
 		if needsModification == 0 {
-			log.Debugf("No modification of ELBV2 (ALB) required.", *lb.IngressID)
+			log.Infof("No modification of ELBV2 (ALB) required.", *lb.IngressID)
 			return nil
 		}
 
